@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/canvas_background"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Fragment Container -->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Floating Bottom Navigation Scaffold -->
+    <FrameLayout
+        android:id="@+id/bottomNavScaffold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingBottom="12dp">
+
+        <!-- White Floating Bar Surface -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="16dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="10dp"
+            app:cardMaxElevation="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:weightSum="5">
+
+                <!-- 1. Beranda -->
+                <LinearLayout
+                    android:id="@+id/navBeranda"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivNavBeranda"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:contentDescription="Beranda"
+                        android:src="@drawable/ic_grid_view"
+                        app:tint="@color/primary" />
+
+                    <TextView
+                        android:id="@+id/tvNavBeranda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="Beranda"
+                        android:textColor="@color/primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- 2. Barang -->
+                <LinearLayout
+                    android:id="@+id/navBarang"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivNavBarang"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:contentDescription="Barang"
+                        android:src="@drawable/ic_inventory_2"
+                        app:tint="@color/nav_inactive" />
+
+                    <TextView
+                        android:id="@+id/tvNavBarang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="Barang"
+                        android:textColor="@color/nav_inactive"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- 3. Center Space for Floating FAB -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <!-- 4. Pinjam -->
+                <LinearLayout
+                    android:id="@+id/navPinjam"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivNavPinjam"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:contentDescription="Pinjam"
+                        android:src="@drawable/ic_assignment"
+                        app:tint="@color/nav_inactive" />
+
+                    <TextView
+                        android:id="@+id/tvNavPinjam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="Pinjam"
+                        android:textColor="@color/nav_inactive"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- 5. Profil -->
+                <LinearLayout
+                    android:id="@+id/navProfil"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivNavProfil"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:contentDescription="Profil"
+                        android:src="@drawable/ic_person"
+                        app:tint="@color/nav_inactive" />
+
+                    <TextView
+                        android:id="@+id/tvNavProfil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="Profil"
+                        android:textColor="@color/nav_inactive"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 3. Center Floating FAB Pindai QR (56dp bulat, #4F46E5) -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabScanQR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="26dp"
+            android:contentDescription="Pindai QR"
+            android:src="@drawable/ic_qr_scanner"
+            app:backgroundTint="#4F46E5"
+            app:elevation="12dp"
+            app:fabCustomSize="56dp"
+            app:maxImageSize="28dp"
+            app:tint="@color/white" />
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

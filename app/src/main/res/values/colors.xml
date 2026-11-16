@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- PALET WARNA BARU "Modern Slate & Indigo" (Material 3) -->
+    <!-- Primary (Indigo): #3525CD -->
+    <color name="primary">#3525CD</color>
+    <color name="primary_dark">#2415A5</color>
+    <color name="primary_light">#EEF0FF</color>
+
+    <!-- Primary Container (Aksen Utama): #4F46E5, OnPrimaryContainer: #DAD7FF -->
+    <color name="primary_container">#4F46E5</color>
+    <color name="on_primary_container">#DAD7FF</color>
+    <color name="primary_gradient_start">#3525CD</color>
+    <color name="primary_gradient_end">#4F46E5</color>
+
+    <!-- Secondary (Success/Disetujui/Baik): #006C49, SecondaryContainer: #6CF8BB -->
+    <color name="secondary">#006C49</color>
+    <color name="secondary_dark">#005136</color>
+    <color name="secondary_container">#6CF8BB</color>
+    <color name="secondary_light">#E6F7F0</color>
+
+    <!-- Tertiary (Warning/Menunggu Approval): #D97706, TertiaryFixed: #FFDDB8 -->
+    <color name="tertiary">#D97706</color>
+    <color name="tertiary_fixed">#FFDDB8</color>
+    <color name="tertiary_light">#FEF3C7</color>
+
+    <!-- Error: #BA1A1A, ErrorContainer: #FFDAD6 -->
+    <color name="error">#BA1A1A</color>
+    <color name="error_container">#FFDAD6</color>
+
+    <!-- Canvas Background: #F8F9FF (Slate Cool) -->
+    <color name="background">#F8F9FF</color>
+    <color name="canvas_background">#F8F9FF</color>
+
+    <!-- Card Surface: #FFFFFF (Elevasi halus 2dp, RoundedCornerShape 16dp) -->
+    <color name="surface">#FFFFFF</color>
+    <color name="card_surface">#FFFFFF</color>
+    <color name="card_stroke">#E2E8F0</color>
+
+    <!-- Form Input Surface: #EFF4FF / #FFFFFF (Border halus, RoundedCornerShape 12dp) -->
+    <color name="form_input_surface">#EFF4FF</color>
+    <color name="input_surface">#EFF4FF</color>
+    <color name="input_border">#D6E4FF</color>
+    <color name="border">#E2E8F0</color>
+
+    <!-- Typography Text Colors -->
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_muted">#94A3B8</color>
+
+    <!-- Stat Card Accent Tints (Bento Grid) -->
+    <color name="stat_barang_icon">#3525CD</color>
+    <color name="stat_barang_bg">#EFF0FE</color>
+
+    <color name="stat_stok_icon">#4F46E5</color>
+    <color name="stat_stok_bg">#EEF0FF</color>
+
+    <color name="stat_menunggu_icon">#D97706</color>
+    <color name="stat_menunggu_bg">#FFDDB8</color>
+
+    <color name="stat_aktif_icon">#006C49</color>
+    <color name="stat_aktif_bg">#6CF8BB</color>
+
+    <!-- Status Badges -->
+    <color name="status_menunggu_text">#9A3412</color>
+    <color name="status_menunggu_bg">#FFDDB8</color>
+
+    <color name="status_disetujui_text">#006C49</color>
+    <color name="status_disetujui_bg">#D1FAE5</color>
+
+    <color name="status_ditolak_text">#BA1A1A</color>
+    <color name="status_ditolak_bg">#FFDAD6</color>
+
+    <color name="status_dikembalikan_text">#3525CD</color>
+    <color name="status_dikembalikan_bg">#DAD7FF</color>
+
+    <!-- Kondisi Badges -->
+    <color name="kondisi_baik_text">#006C49</color>
+    <color name="kondisi_baik_bg">#D1FAE5</color>
+
+    <color name="kondisi_rusak_ringan_text">#D97706</color>
+    <color name="kondisi_rusak_ringan_bg">#FEF3C7</color>
+
+    <color name="kondisi_rusak_berat_text">#BA1A1A</color>
+    <color name="kondisi_rusak_berat_bg">#FFDAD6</color>
+
+    <color name="role_admin_bg">#3525CD</color>
+    <color name="role_user_bg">#4F46E5</color>
+
+    <color name="nav_active">#3525CD</color>
+    <color name="nav_inactive">#94A3B8</color>
+    <color name="nav_fab_bg">#4F46E5</color>
+
+    <!-- Bear Theme Compat -->
+    <color name="bear_brown">#8A6D55</color>
+    <color name="bear_brown_dark">#745842</color>
+    <color name="bear_bg">#F8F9FF</color>
+    <color name="bear_input">#EFF4FF</color>
+    <color name="bear_border">#D6E4FF</color>
+    <color name="bear_text">#3D2E24</color>
+    <color name="bear_text_muted">#8C7D73</color>
+</resources>

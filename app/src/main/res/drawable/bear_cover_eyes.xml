@@ -1,0 +1,235 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="180dp"
+    android:height="180dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- 1. Ambient Ground Shadow -->
+    <path
+        android:fillColor="#15000000"
+        android:pathData="M35,194 C35,186 165,186 165,194 C165,200 35,200 35,194 Z" />
+
+    <!-- 2. Left Ear (3D Layered) -->
+    <!-- Ear Shadow -->
+    <path
+        android:fillColor="#714523"
+        android:pathData="M64,48 A20,20 0 1,1 42,78 A20,20 0 0,1 64,48 Z" />
+    <!-- Ear Base Fur -->
+    <path
+        android:fillColor="#9C6439"
+        android:pathData="M65,47 A19,19 0 1,1 44,76 A19,19 0 0,1 65,47 Z" />
+    <!-- Ear Top-Left 3D Rim Highlight -->
+    <path
+        android:fillColor="#B87D4E"
+        android:pathData="M62,47 C50,49 43,60 45,71 C43,62 48,51 58,48 Z" />
+    <!-- Ear Inner Cup (Depth) -->
+    <path
+        android:fillColor="#B2825C"
+        android:pathData="M64,55 A12,12 0 1,1 50,75 A12,12 0 0,1 64,55 Z" />
+    <!-- Ear Inner Cup Light -->
+    <path
+        android:fillColor="#E3BF9E"
+        android:pathData="M63,56 A10,10 0 1,1 52,73 A10,10 0 0,1 63,56 Z" />
+
+    <!-- 3. Right Ear (3D Layered) -->
+    <!-- Ear Shadow -->
+    <path
+        android:fillColor="#714523"
+        android:pathData="M136,48 A20,20 0 1,1 158,78 A20,20 0 0,1 136,48 Z" />
+    <!-- Ear Base Fur -->
+    <path
+        android:fillColor="#9C6439"
+        android:pathData="M135,47 A19,19 0 1,1 156,76 A19,19 0 0,1 135,47 Z" />
+    <!-- Ear Top 3D Rim Highlight -->
+    <path
+        android:fillColor="#B87D4E"
+        android:pathData="M138,47 C150,49 157,60 155,71 C157,62 152,51 142,48 Z" />
+    <!-- Ear Inner Cup (Depth) -->
+    <path
+        android:fillColor="#B2825C"
+        android:pathData="M136,55 A12,12 0 1,1 150,75 A12,12 0 0,1 136,55 Z" />
+    <!-- Ear Inner Cup Light -->
+    <path
+        android:fillColor="#E3BF9E"
+        android:pathData="M137,56 A10,10 0 1,1 148,73 A10,10 0 0,1 137,56 Z" />
+
+    <!-- 4. Bear Body / Torso (Plush 3D Depth) -->
+    <!-- Base Body Shadow -->
+    <path
+        android:fillColor="#714523"
+        android:pathData="M50,140 C46,128 62,122 100,122 C138,122 154,128 150,140 L168,196 C168,199 32,199 32,196 Z" />
+    <!-- Main Body Fur -->
+    <path
+        android:fillColor="#9C6439"
+        android:pathData="M52,142 C48,130 64,124 100,124 C136,124 152,130 148,142 L166,194 C166,198 34,198 34,194 Z" />
+    <!-- 3D Chest/Belly Highlight -->
+    <path
+        android:fillColor="#B87D4E"
+        android:pathData="M74,146 C74,136 86,132 100,132 C114,132 126,136 126,146 L138,190 C122,193 78,193 62,190 Z" />
+    <path
+        android:fillColor="#B87D4E"
+        android:pathData="M75,148 C75,138 88,134 100,134 C112,134 125,138 125,148 L134,188 C120,191 80,191 66,188 Z" />
+
+    <!-- 5. 3D Head Volume -->
+    <!-- Base Head Shadow / Ambient Occlusion -->
+    <path
+        android:fillColor="#714523"
+        android:pathData="M57,98 C57,63 75,50 100,50 C125,50 143,63 143,98 C143,132 125,142 100,142 C75,142 57,132 57,98 Z" />
+    <!-- Main Head Fur (Soft Warm Caramel) -->
+    <path
+        android:fillColor="#A26B3E"
+        android:pathData="M58,96 C58,63 76,51 100,51 C124,51 142,63 142,96 C142,130 124,140 100,140 C76,140 58,130 58,96 Z" />
+    <!-- 3D Head Light Gradient / Top-Left Dome Volume -->
+    <path
+        android:fillColor="#BC8151"
+        android:pathData="M62,88 C62,65 77,54 100,54 C118,54 132,63 136,82 C126,62 104,56 82,62 C68,67 62,77 62,88 Z" />
+    <!-- Forehead Soft Specular Sheen -->
+    <path
+        android:fillColor="#15FFFFFF"
+        android:pathData="M78,64 C88,57 112,57 122,64 C114,60 86,60 78,64 Z" />
+
+    <!-- 6. Cute 3D Indigo Beret Hat -->
+    <!-- Beret Shadow onto Fur -->
+    <path
+        android:fillColor="#35000000"
+        android:pathData="M84,52 C84,45 116,45 116,52 C122,55 120,60 100,60 C80,60 78,55 84,52 Z" />
+    <!-- Beret Base / Bottom Rim -->
+    <path
+        android:fillColor="#312E81"
+        android:pathData="M83,49 C83,44 117,44 117,49 C123,54 119,57 100,57 C81,57 77,54 83,49 Z" />
+    <!-- Beret Main Indigo Body -->
+    <path
+        android:fillColor="#4F46E5"
+        android:pathData="M85,47 C85,38 115,38 115,47 C122,51 118,55 100,55 C82,55 78,51 85,47 Z" />
+    <!-- Beret 3D Top Highlight -->
+    <path
+        android:fillColor="#6366F1"
+        android:pathData="M89,45 C92,39 108,39 111,45 C107,41 93,41 89,45 Z" />
+    <!-- Beret Pompom Stalk -->
+    <path
+        android:fillColor="#4338CA"
+        android:pathData="M98,40 A3,3 0 1,1 102,40 A3,3 0 0,1 98,40 Z" />
+    <path
+        android:fillColor="#818CF8"
+        android:pathData="M99,39 A1.5,1.5 0 1,1 101,39 A1.5,1.5 0 0,1 99,39 Z" />
+
+    <!-- Shy Little Indigo Sparkles -->
+    <path
+        android:fillColor="#818CF8"
+        android:pathData="M48,68 Q48,72 51,72 Q48,72 48,76 Q48,72 45,72 Q48,72 48,68 Z" />
+    <path
+        android:fillColor="#818CF8"
+        android:pathData="M152,68 Q152,72 155,72 Q152,72 152,76 Q152,72 149,72 Q152,72 152,68 Z" />
+
+    <!-- 7. 3D Rounded Muzzle / Snout Area (visible under paws) -->
+    <!-- Snout Ambient Shadow onto Face -->
+    <path
+        android:fillColor="#25000000"
+        android:pathData="M82,109 C82,99 118,99 118,109 C118,123 82,123 82,109 Z" />
+    <!-- Snout Base Color (Soft Cream Tone) -->
+    <path
+        android:fillColor="#ECC9A9"
+        android:pathData="M83,107 C83,99 117,99 117,107 C117,121 83,121 83,107 Z" />
+    <!-- Snout 3D Upper Light Dome -->
+    <path
+        android:fillColor="#F6DEC9"
+        android:pathData="M85,105 C87,99 113,99 115,105 C111,101 89,101 85,105 Z" />
+
+    <!-- 8. 3D Glossy Nose -->
+    <!-- Nose Shadow -->
+    <path
+        android:fillColor="#15000000"
+        android:pathData="M92,105 C92,101 108,101 108,105 C108,110 92,110 92,105 Z" />
+    <!-- Nose Base (Dark Chocolate) -->
+    <path
+        android:fillColor="#231309"
+        android:pathData="M93,103 C93,100 107,100 107,103 C107,108 93,108 93,103 Z" />
+    <!-- Nose 3D Glossy Reflection (Specular Pill) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M96,101.5 C96,100.8 100,100.8 100,101.5 C100,102.5 96,102.5 96,101.5 Z" />
+
+    <!-- Cute Shy Smiling Mouth -->
+    <path
+        android:strokeColor="#2C1A10"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M96,111 Q100,116 104,111" />
+    <path
+        android:strokeColor="#2C1A10"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M100,107 L100,111" />
+
+    <!-- 9. Soft Glowing Blushing Cheeks (Wide & Glowing) -->
+    <path
+        android:fillColor="#55F472B6"
+        android:pathData="M63,106 A9,8 0 1,1 81,106 A9,8 0 0,1 63,106 Z" />
+    <path
+        android:fillColor="#35FB7185"
+        android:pathData="M66,106 A5.5,5 0 1,1 77,106 A5.5,5 0 0,1 66,106 Z" />
+
+    <path
+        android:fillColor="#55F472B6"
+        android:pathData="M119,106 A9,8 0 1,1 137,106 A9,8 0 0,1 119,106 Z" />
+    <path
+        android:fillColor="#35FB7185"
+        android:pathData="M123,106 A5.5,5 0 1,1 134,106 A5.5,5 0 0,1 123,106 Z" />
+
+    <!-- 10. Ambient Shadow Cast by Paws onto Face -->
+    <path
+        android:fillColor="#35000000"
+        android:pathData="M52,142 C50,110 68,72 88,72 C98,72 100,82 98,104 C94,118 72,154 62,154 Z" />
+    <path
+        android:fillColor="#35000000"
+        android:pathData="M148,142 C150,110 132,72 112,72 C102,72 100,82 102,104 C106,118 128,154 138,154 Z" />
+
+    <!-- 11. 3D Chubby Left Arm & Paw Covering Eye -->
+    <!-- Left Arm Base Shadow -->
+    <path
+        android:fillColor="#714523"
+        android:pathData="M50,140 C46,114 66,74 86,74 C96,74 99,83 97,102 C94,122 72,154 60,154 Z" />
+    <!-- Left Arm Main 3D Volume -->
+    <path
+        android:fillColor="#9C6439"
+        android:pathData="M52,138 C48,114 68,75 87,75 C95,75 97,83 95,101 C92,120 70,152 62,152 Z" />
+    <!-- Left Arm Outer Highlight Rim -->
+    <path
+        android:fillColor="#B87D4E"
+        android:pathData="M52,138 C48,118 64,86 80,77 C70,86 58,112 60,138 Z" />
+    <!-- Left Paw Mitt Dome Light -->
+    <path
+        android:fillColor="#CC9264"
+        android:pathData="M81,77 C86,76 94,78 95,85 C93,92 88,96 82,92 C77,88 77,80 81,77 Z" />
+    <!-- Left Paw Soft Finger Grooves -->
+    <path
+        android:strokeColor="#6D401E"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M80,78 L80,88 M86,78 L86,88 M91,80 L91,89" />
+
+    <!-- 12. 3D Chubby Right Arm & Paw Covering Eye -->
+    <!-- Right Arm Base Shadow -->
+    <path
+        android:fillColor="#714523"
+        android:pathData="M150,140 C154,114 134,74 114,74 C104,74 101,83 103,102 C106,122 128,154 140,154 Z" />
+    <!-- Right Arm Main 3D Volume -->
+    <path
+        android:fillColor="#9C6439"
+        android:pathData="M148,138 C152,114 132,75 113,75 C105,75 103,83 105,101 C108,120 130,152 138,152 Z" />
+    <!-- Right Arm Outer Highlight Rim -->
+    <path
+        android:fillColor="#B87D4E"
+        android:pathData="M148,138 C152,118 136,86 120,77 C130,86 142,112 140,138 Z" />
+    <!-- Right Paw Mitt Dome Light -->
+    <path
+        android:fillColor="#CC9264"
+        android:pathData="M119,77 C114,76 106,78 105,85 C107,92 112,96 118,92 C123,88 123,80 119,77 Z" />
+    <!-- Right Paw Soft Finger Grooves -->
+    <path
+        android:strokeColor="#6D401E"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M120,78 L120,88 M114,78 L114,88 M109,80 L109,89" />
+
+</vector>

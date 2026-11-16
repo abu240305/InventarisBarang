@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/topBarRoot"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:background="@color/surface"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+
+    <ImageView
+        android:id="@+id/ivModuleIcon"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:contentDescription="Module Icon"
+        android:src="@drawable/ic_inventory"
+        app:tint="@color/primary" />
+
+    <TextView
+        android:id="@+id/tvModuleTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:text="Barang"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Notification Icon with Red Dot -->
+    <FrameLayout
+        android:id="@+id/btnNotification"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:contentDescription="Notifikasi"
+            android:src="@drawable/ic_notifications"
+            app:tint="@color/text_primary" />
+
+        <View
+            android:id="@+id/dotNotification"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/badge_background"
+            android:backgroundTint="#EF4444" />
+    </FrameLayout>
+
+    <!-- User Profile Avatar Circle -->
+    <FrameLayout
+        android:id="@+id/btnTopProfile"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/circle_icon_bg"
+        android:backgroundTint="@color/primary_light"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/ivTopAvatar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:contentDescription="Profil"
+            android:src="@drawable/ic_person"
+            app:tint="@color/primary" />
+    </FrameLayout>
+</LinearLayout>

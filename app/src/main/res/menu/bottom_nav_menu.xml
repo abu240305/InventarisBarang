@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Beranda" />
+
+    <item
+        android:id="@+id/nav_barang"
+        android:icon="@drawable/ic_inventory"
+        android:title="Barang" />
+
+    <item
+        android:id="@+id/nav_peminjaman"
+        android:icon="@drawable/ic_assignment"
+        android:title="Peminjaman" />
+
+    <item
+        android:id="@+id/nav_kategori"
+        android:icon="@drawable/ic_category"
+        android:title="Kategori" />
+
+    <item
+        android:id="@+id/nav_profil"
+        android:icon="@drawable/ic_person"
+        android:title="Profil" />
+</menu>
