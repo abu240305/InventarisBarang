@@ -14,7 +14,7 @@ object ApiConfig {
     // Default URL untuk Emulator Android yang mengakses Laravel di localhost komputer host.
     // Catatan: Jika menguji aplikasi di HP fisik nyata, ganti 10.0.2.2 dengan alamat IP Wi-Fi
     // laptop/server Laravel Anda (misalnya: "http://192.168.1.100:8000/api/").
-    const val BASE_URL = "http://192.168.1.21:8000/api/"
+    const val BASE_URL = "http://192.168.0.181:8000/api/"
 
     fun getApiService(context: Context): ApiService {
         val loggingInterceptor = HttpLoggingInterceptor().apply {

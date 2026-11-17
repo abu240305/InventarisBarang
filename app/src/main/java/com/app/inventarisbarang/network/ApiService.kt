@@ -90,10 +90,38 @@ interface ApiService {
         @Body body: Map<String, @JvmSuppressWildcards Any>
     ): Response<BaseResponse<Barang>>
 
+    @retrofit2.http.Multipart
+    @POST("barang")
+    suspend fun tambahBarangMultipart(
+        @retrofit2.http.Part("kode_barang") kodeBarang: okhttp3.RequestBody,
+        @retrofit2.http.Part("nama_barang") namaBarang: okhttp3.RequestBody,
+        @retrofit2.http.Part("kategori_id") kategoriId: okhttp3.RequestBody,
+        @retrofit2.http.Part("stok") stok: okhttp3.RequestBody,
+        @retrofit2.http.Part("kondisi") kondisi: okhttp3.RequestBody,
+        @retrofit2.http.Part("deskripsi") deskripsi: okhttp3.RequestBody?,
+        @retrofit2.http.Part("lokasi_rak") lokasiRak: okhttp3.RequestBody?,
+        @retrofit2.http.Part gambar: okhttp3.MultipartBody.Part?
+    ): Response<BaseResponse<Barang>>
+
     @PUT("barang/{id}")
     suspend fun updateBarang(
         @Path("id") id: Int,
         @Body body: Map<String, @JvmSuppressWildcards Any>
+    ): Response<BaseResponse<Barang>>
+
+    @retrofit2.http.Multipart
+    @POST("barang/{id}")
+    suspend fun updateBarangMultipart(
+        @Path("id") id: Int,
+        @retrofit2.http.Part("kode_barang") kodeBarang: okhttp3.RequestBody,
+        @retrofit2.http.Part("nama_barang") namaBarang: okhttp3.RequestBody,
+        @retrofit2.http.Part("kategori_id") kategoriId: okhttp3.RequestBody,
+        @retrofit2.http.Part("stok") stok: okhttp3.RequestBody,
+        @retrofit2.http.Part("kondisi") kondisi: okhttp3.RequestBody,
+        @retrofit2.http.Part("deskripsi") deskripsi: okhttp3.RequestBody?,
+        @retrofit2.http.Part("lokasi_rak") lokasiRak: okhttp3.RequestBody?,
+        @retrofit2.http.Part("lokasi") lokasi: okhttp3.RequestBody?,
+        @retrofit2.http.Part gambar: okhttp3.MultipartBody.Part?
     ): Response<BaseResponse<Barang>>
 
     @DELETE("barang/{id}")
@@ -129,4 +157,31 @@ interface ApiService {
     suspend fun deletePeminjaman(
         @Path("id") id: Int
     ): Response<BaseResponse<Any>>
+
+    // User Management
+    @GET("users")
+    suspend fun getUsers(
+        @Query("search") search: String? = null,
+        @Query("role") role: String? = null
+    ): Response<BaseResponse<List<User>>>
+
+    @POST("users")
+    suspend fun tambahUser(
+        @Body body: Map<String, @JvmSuppressWildcards Any>
+    ): Response<BaseResponse<User>>
+
+    @PUT("users/{id}")
+    suspend fun updateUser(
+        @Path("id") id: Int,
+        @Body body: Map<String, @JvmSuppressWildcards Any>
+    ): Response<BaseResponse<User>>
+
+    @DELETE("users/{id}")
+    suspend fun deleteUser(
+        @Path("id") id: Int
+    ): Response<BaseResponse<Any>>
+
+    // Notifikasi Sistem
+    @GET("notifikasi")
+    suspend fun getNotifikasi(): Response<BaseResponse<List<com.app.inventarisbarang.model.Notifikasi>>>
 }

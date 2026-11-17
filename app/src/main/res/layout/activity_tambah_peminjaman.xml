@@ -6,9 +6,11 @@
     android:background="#F8FAFC">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary"
+        android:fitsSystemWindows="true"
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
@@ -85,22 +87,30 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- SPINNER BARANG -->
+                    <!-- PILIH BARANG (Modern Clickable Selector) -->
                     <FrameLayout
+                        android:id="@+id/btnSelectBarang"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/form_input_bg">
+                        android:background="@drawable/form_input_bg"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground">
 
-                        <Spinner
-                            android:id="@+id/spinnerBarang"
+                        <TextView
+                            android:id="@+id/tvSelectedBarang"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@android:color/transparent"
+                            android:gravity="center_vertical"
                             android:paddingStart="14dp"
-                            android:paddingEnd="42dp" />
+                            android:paddingEnd="42dp"
+                            android:text="Pilih barang yang ingin dipinjam..."
+                            android:textColor="@color/text_primary"
+                            android:textSize="13.5sp" />
 
                         <ImageView
+                            android:id="@+id/ivChevronBarang"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="end|center_vertical"
@@ -201,7 +211,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="18dp"
-                        android:text="Tanggal Pinjam (YYYY-MM-DD)"
+                        android:text="Tanggal Mulai Pinjam (YYYY-MM-DD)"
                         android:textColor="#334155"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -249,6 +259,127 @@
                             android:src="@drawable/ic_calendar"
                             app:tint="#64748B" />
                     </FrameLayout>
+
+                    <!-- BATAS PINJAM / ESTIMASI TANGGAL KEMBALI -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Batas Pinjam / Tanggal Kembali"
+                            android:textColor="#334155"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvDurasiBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/pill_badge_blue"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="3dp"
+                            android:text="Durasi: 3 Hari"
+                            android:textColor="@color/primary"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/containerTanggalKembali"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/form_input_bg"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="start|center_vertical"
+                            android:layout_marginStart="14dp"
+                            android:contentDescription="Calendar"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="#64748B" />
+
+                        <EditText
+                            android:id="@+id/etTanggalKembali"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:hint="Pilih batas tanggal kembali..."
+                            android:inputType="none"
+                            android:paddingStart="44dp"
+                            android:paddingEnd="44dp"
+                            android:textColor="#1E293B"
+                            android:textColorHint="#94A3B8"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="14dp"
+                            android:contentDescription="Calendar End"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="#64748B" />
+                    </FrameLayout>
+
+                    <!-- QUICK DURATION SHORTCUT CHIPS -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/chipDurasi3Hari"
+                            android:layout_width="0dp"
+                            android:layout_height="36dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/form_kondisi_selected_bg"
+                            android:gravity="center"
+                            android:text="+3 Hari"
+                            android:textColor="@color/primary"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/chipDurasi5Hari"
+                            android:layout_width="0dp"
+                            android:layout_height="36dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/form_kondisi_unselected_bg"
+                            android:gravity="center"
+                            android:text="+5 Hari"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/chipDurasi7Hari"
+                            android:layout_width="0dp"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/form_kondisi_unselected_bg"
+                            android:gravity="center"
+                            android:text="+7 Hari"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <!-- KETERANGAN / KEPERLUAN ROW WITH OPSIONAL BADGE -->
                     <LinearLayout

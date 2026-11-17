@@ -17,6 +17,7 @@ import com.app.inventarisbarang.databinding.FragmentProfilBinding
 import com.app.inventarisbarang.model.User
 import com.app.inventarisbarang.network.ApiConfig
 import com.app.inventarisbarang.ui.auth.LoginActivity
+import com.app.inventarisbarang.utils.AppDialog
 import com.app.inventarisbarang.utils.ErrorUtils
 import com.app.inventarisbarang.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -60,14 +61,14 @@ class ProfilFragment : Fragment() {
         }
 
         binding.topBar.btnNotification.setOnClickListener {
-            Toast.makeText(requireContext(), "Semua notifikasi inventaris telah diperbarui", Toast.LENGTH_SHORT).show()
+            AppDialog.showNotificationSheet(requireContext())
         }
     }
 
     private fun displayFallbackData() {
         val name = sessionManager.getName().ifEmpty { sessionManager.getUsername() }
         val username = sessionManager.getUsername()
-        val email = sessionManager.getEmail().ifEmpty { "admin@dcc.org" }
+        val email = sessionManager.getEmail().ifEmpty { "admin@inventaris.id" }
         val role = sessionManager.getRole()
         val divisi = sessionManager.getDivisi()
 
@@ -81,6 +82,8 @@ class ProfilFragment : Fragment() {
 
         val avatar = sessionManager.getAvatar()
         if (avatar.isNotEmpty()) {
+            binding.ivAvatar.imageTintList = null
+            binding.ivAvatar.setPadding(0, 0, 0, 0)
             binding.ivAvatar.load(avatar) {
                 crossfade(true)
                 placeholder(R.drawable.ic_person)
@@ -108,11 +111,11 @@ class ProfilFragment : Fragment() {
     private fun updateUI(user: User) {
         binding.tvNama.text = user.name
         binding.tvUsername.text = user.username
-        binding.tvEmail.text = user.email ?: "admin@dcc.org"
+        binding.tvEmail.text = user.email ?: "admin@inventaris.id"
         binding.tvRoleBadge.text = if (user.role.equals("admin", ignoreCase = true)) "★ ADMIN UTAMA" else "ANGGOTA"
         binding.tvRole.text = if (user.role.equals("admin", ignoreCase = true)) "Super Administrator" else "Anggota Organisasi"
 
-        val divisi = user.divisi ?: "Dipanegara Computer Club"
+        val divisi = user.divisi ?: "Divisi Operasional"
         binding.tvDivisiHeader.text = divisi
         binding.tvDivisiDetail.text = divisi
 
@@ -121,10 +124,14 @@ class ProfilFragment : Fragment() {
         }
 
         if (!user.avatar.isNullOrEmpty()) {
+            binding.ivAvatar.imageTintList = null
+            binding.ivAvatar.setPadding(0, 0, 0, 0)
             binding.ivAvatar.load(user.avatar) {
                 crossfade(true)
                 placeholder(R.drawable.ic_person)
             }
+            binding.topBar.ivTopAvatar.imageTintList = null
+            binding.topBar.ivTopAvatar.setPadding(0, 0, 0, 0)
             binding.topBar.ivTopAvatar.load(user.avatar) {
                 crossfade(true)
                 placeholder(R.drawable.ic_person)
@@ -182,14 +189,16 @@ class ProfilFragment : Fragment() {
     }
 
     private fun showLogoutConfirmDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Konfirmasi Logout")
-            .setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
-            .setPositiveButton("Keluar") { _, _ ->
-                handleLogout()
-            }
-            .setNegativeButton("Batal", null)
-            .show()
+        AppDialog.showConfirmation(
+            context = requireContext(),
+            title = "Keluar dari Akun?",
+            message = "Sesi akun Anda akan diakhiri. Anda perlu login kembali untuk mengakses data inventaris.",
+            positiveText = "Keluar",
+            negativeText = "Batal",
+            type = AppDialog.DialogType.DESTRUCTIVE
+        ) {
+            handleLogout()
+        }
     }
 
     private fun handleLogout() {

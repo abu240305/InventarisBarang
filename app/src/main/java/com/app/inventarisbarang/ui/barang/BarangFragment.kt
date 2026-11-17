@@ -21,6 +21,7 @@ import com.app.inventarisbarang.model.Barang
 import com.app.inventarisbarang.model.Kategori
 import com.app.inventarisbarang.network.ApiConfig
 import com.app.inventarisbarang.ui.dashboard.DashboardActivity
+import com.app.inventarisbarang.utils.AppDialog
 import com.app.inventarisbarang.utils.ErrorUtils
 import com.app.inventarisbarang.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -69,6 +70,8 @@ class BarangFragment : Fragment() {
 
         val avatar = sessionManager.getAvatar()
         if (avatar.isNotEmpty()) {
+            binding.topBar.ivTopAvatar.imageTintList = null
+            binding.topBar.ivTopAvatar.setPadding(0, 0, 0, 0)
             binding.topBar.ivTopAvatar.load(avatar) {
                 crossfade(true)
                 placeholder(R.drawable.ic_person)
@@ -80,7 +83,9 @@ class BarangFragment : Fragment() {
         }
 
         binding.topBar.btnNotification.setOnClickListener {
-            Toast.makeText(requireContext(), "Semua notifikasi inventaris telah diperbarui", Toast.LENGTH_SHORT).show()
+            AppDialog.showNotificationSheet(requireContext()) {
+                (activity as? DashboardActivity)?.switchTab(R.id.nav_peminjaman)
+            }
         }
     }
 
@@ -112,27 +117,30 @@ class BarangFragment : Fragment() {
     }
 
     private fun deleteBarang(barang: Barang) {
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle("Hapus Barang")
-            .setMessage("Yakin ingin menghapus ${barang.nama_barang}?")
-            .setPositiveButton("Hapus") { _, _ ->
-                viewLifecycleOwner.lifecycleScope.launch {
-                    try {
-                        val api = ApiConfig.getApiService(requireContext())
-                        val res = api.deleteBarang(barang.id)
-                        if (res.isSuccessful) {
-                            Toast.makeText(requireContext(), "Barang berhasil dihapus", Toast.LENGTH_SHORT).show()
-                            loadBarang()
-                        } else {
-                            Toast.makeText(requireContext(), ErrorUtils.parseError(res), Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (t: Throwable) {
-                        Toast.makeText(requireContext(), "Gagal: ${t.message}", Toast.LENGTH_SHORT).show()
+        AppDialog.showConfirmation(
+            context = requireContext(),
+            title = "Hapus Aset Barang?",
+            message = "Apakah Anda yakin ingin menghapus data aset ini dari katalog inventaris? Tindakan ini tidak dapat dibatalkan.",
+            highlight = barang.nama_barang,
+            positiveText = "Hapus Aset",
+            negativeText = "Batal",
+            type = AppDialog.DialogType.DESTRUCTIVE
+        ) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    val api = ApiConfig.getApiService(requireContext())
+                    val res = api.deleteBarang(barang.id)
+                    if (res.isSuccessful) {
+                        Toast.makeText(requireContext(), "Barang berhasil dihapus", Toast.LENGTH_SHORT).show()
+                        loadBarang()
+                    } else {
+                        Toast.makeText(requireContext(), ErrorUtils.parseError(res), Toast.LENGTH_SHORT).show()
                     }
+                } catch (t: Throwable) {
+                    Toast.makeText(requireContext(), "Gagal: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("Batal", null)
-            .show()
+        }
     }
 
     private fun setupFab() {

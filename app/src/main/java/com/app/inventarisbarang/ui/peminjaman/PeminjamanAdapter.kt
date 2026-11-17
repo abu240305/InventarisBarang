@@ -70,19 +70,23 @@ class PeminjamanAdapter(
             // 4. Thumbnail loading with Coil
             val gambar = peminjaman.barang?.gambar
             if (!gambar.isNullOrEmpty()) {
+                binding.ivThumbnail.imageTintList = null
+                binding.ivThumbnail.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
                 binding.ivThumbnail.load(gambar) {
                     crossfade(true)
-                    placeholder(R.drawable.ic_inventory)
-                    error(R.drawable.ic_inventory)
+                    placeholder(R.drawable.ic_inventory_2)
+                    error(R.drawable.ic_inventory_2)
                 }
             } else {
-                binding.ivThumbnail.setImageResource(R.drawable.ic_inventory)
+                binding.ivThumbnail.imageTintList = null
+                binding.ivThumbnail.scaleType = android.widget.ImageView.ScaleType.CENTER_INSIDE
+                binding.ivThumbnail.setImageResource(R.drawable.ic_inventory_2)
             }
 
             // 5. Borrower Info (Initial Avatar + Name + Divisi)
             val borrowerName = peminjaman.user?.name ?: "User #${peminjaman.user_id}"
             binding.tvPeminjam.text = borrowerName
-            binding.tvDivisi.text = peminjaman.user?.divisi ?: "Anggota DCC"
+            binding.tvDivisi.text = peminjaman.user?.divisi ?: "Anggota"
 
             val initials = borrowerName.split(" ")
                 .filter { it.isNotBlank() }

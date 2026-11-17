@@ -105,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Divisi Sarana &amp; Prasarana DCC"
+                        android:text="Divisi Sarana &amp; Prasarana"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
 
@@ -295,7 +295,7 @@
                             android:id="@+id/tvEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="admin@dcc.org"
+                            android:text="admin@inventaris.id"
                             android:textColor="@color/text_primary"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -373,7 +373,7 @@
                             android:id="@+id/tvDivisiDetail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pusat DCC"
+                            android:text="Divisi Operasional"
                             android:textColor="@color/text_primary"
                             android:textSize="13sp"
                             android:textStyle="bold" />

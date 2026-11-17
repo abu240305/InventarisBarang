@@ -88,9 +88,8 @@
                 android:layout_height="48dp"
                 android:background="#F1F5F9"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_inventory"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-                app:tint="@color/text_muted" />
+                android:src="@drawable/ic_inventory_2"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <LinearLayout
                 android:layout_width="0dp"

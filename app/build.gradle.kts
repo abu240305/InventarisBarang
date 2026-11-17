@@ -62,6 +62,11 @@ dependencies {
     // Image Loading
     implementation("io.coil-kt:coil:2.7.0")
 
+    // Barcode / QR Scanner (ZXing Android Embedded)
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("androidx.print:print:1.0.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

@@ -11,18 +11,23 @@ import com.app.inventarisbarang.databinding.ActivityKategoriBinding
 import com.app.inventarisbarang.databinding.DialogKategoriBinding
 import com.app.inventarisbarang.model.Kategori
 import com.app.inventarisbarang.network.ApiConfig
+import com.app.inventarisbarang.utils.AppDialog
 import com.app.inventarisbarang.utils.ErrorUtils
+import com.app.inventarisbarang.utils.SessionManager
 import kotlinx.coroutines.launch
 
 class KategoriActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityKategoriBinding
     private lateinit var adapter: KategoriAdapter
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKategoriBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sessionManager = SessionManager.getInstance(this)
 
         setupToolbar()
         setupRecyclerView()
@@ -39,7 +44,8 @@ class KategoriActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         adapter = KategoriAdapter(
             onEditClick = { kategori -> showFormDialog(kategori) },
-            onDeleteClick = { kategori -> showDeleteConfirmDialog(kategori) }
+            onDeleteClick = { kategori -> showDeleteConfirmDialog(kategori) },
+            isAdmin = sessionManager.isAdmin()
         )
         binding.rvKategori.layoutManager = LinearLayoutManager(this)
         binding.rvKategori.adapter = adapter
@@ -50,8 +56,13 @@ class KategoriActivity : AppCompatActivity() {
     }
 
     private fun setupFab() {
-        binding.fabTambahKategori.setOnClickListener {
-            showFormDialog(null)
+        if (sessionManager.isAdmin()) {
+            binding.fabTambahKategori.visibility = View.VISIBLE
+            binding.fabTambahKategori.setOnClickListener {
+                showFormDialog(null)
+            }
+        } else {
+            binding.fabTambahKategori.visibility = View.GONE
         }
     }
 
@@ -140,14 +151,17 @@ class KategoriActivity : AppCompatActivity() {
     }
 
     private fun showDeleteConfirmDialog(kategori: Kategori) {
-        AlertDialog.Builder(this)
-            .setTitle("Hapus Kategori")
-            .setMessage("Apakah Anda yakin ingin menghapus kategori \"${kategori.nama_kategori}\"?")
-            .setPositiveButton("Hapus") { _, _ ->
-                deleteKategori(kategori.id)
-            }
-            .setNegativeButton("Batal", null)
-            .show()
+        AppDialog.showConfirmation(
+            context = this,
+            title = "Hapus Kategori?",
+            message = "Apakah Anda yakin ingin menghapus kategori ini? Data yang terhapus tidak dapat dipulihkan.",
+            highlight = kategori.nama_kategori,
+            positiveText = "Hapus Kategori",
+            negativeText = "Batal",
+            type = AppDialog.DialogType.DESTRUCTIVE
+        ) {
+            deleteKategori(kategori.id)
+        }
     }
 
     private fun deleteKategori(id: Int) {

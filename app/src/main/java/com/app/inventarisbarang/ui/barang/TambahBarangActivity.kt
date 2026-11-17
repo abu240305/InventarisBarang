@@ -1,18 +1,30 @@
 package com.app.inventarisbarang.ui.barang
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.app.inventarisbarang.R
 import com.app.inventarisbarang.databinding.ActivityTambahBarangBinding
 import com.app.inventarisbarang.model.Kategori
 import com.app.inventarisbarang.network.ApiConfig
 import com.app.inventarisbarang.utils.ErrorUtils
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
+import java.io.FileOutputStream
 
 class TambahBarangActivity : AppCompatActivity() {
 
@@ -20,6 +32,28 @@ class TambahBarangActivity : AppCompatActivity() {
     private var kategoriList: List<Kategori> = emptyList()
     private var selectedKondisi: String = "Baik"
     private var currentStok: Int = 1
+    private var selectedImageUri: Uri? = null
+
+    private val pickMediaLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) {
+            selectedImageUri = uri
+            binding.ivPreviewFoto.load(uri) {
+                crossfade(true)
+            }
+            binding.ivPreviewFoto.visibility = View.VISIBLE
+            binding.tvChangeImageBadge.visibility = View.VISIBLE
+            binding.layoutImagePlaceholder.visibility = View.GONE
+        }
+    }
+
+    private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
+        if (result.contents != null) {
+            binding.etKodeBarang.setText(result.contents)
+            Toast.makeText(this, "Kode SKU: ${result.contents} terbaca!", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +64,27 @@ class TambahBarangActivity : AppCompatActivity() {
         setupStepperStok()
         setupScanAutoFill()
         setupKondisiButtons()
+        setupImagePicker()
         loadKategori()
 
         binding.btnSimpan.setOnClickListener {
             handleSimpan()
+        }
+    }
+
+    private fun setupImagePicker() {
+        binding.cardPickImage.setOnClickListener {
+            pickMediaLauncher.launch(
+                androidx.activity.result.PickVisualMediaRequest(
+                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                )
+            )
+        }
+
+        binding.btnToggleUrlMode.setOnClickListener {
+            val isVisible = binding.layoutUrlInput.visibility == View.VISIBLE
+            binding.layoutUrlInput.visibility = if (isVisible) View.GONE else View.VISIBLE
+            binding.btnToggleUrlMode.text = if (isVisible) "Input via URL?" else "Sembunyikan URL"
         }
     }
 
@@ -61,10 +112,61 @@ class TambahBarangActivity : AppCompatActivity() {
 
     private fun setupScanAutoFill() {
         binding.btnScanKodeBarang.setOnClickListener {
+            showModernScanSkuBottomSheet()
+        }
+    }
+
+    private fun showModernScanSkuBottomSheet() {
+        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val sheetBinding = com.app.inventarisbarang.databinding.BottomSheetScanSkuBinding.inflate(layoutInflater)
+        dialog.setContentView(sheetBinding.root)
+
+        var isSheetTorchOn = false
+
+        sheetBinding.btnSheetClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        sheetBinding.btnSheetTorch.setOnClickListener {
+            isSheetTorchOn = !isSheetTorchOn
+            sheetBinding.sheetBarcodeView.setTorch(isSheetTorchOn)
+            if (isSheetTorchOn) {
+                sheetBinding.btnSheetTorch.backgroundTintList = ContextCompat.getColorStateList(this, R.color.primary)
+            } else {
+                sheetBinding.btnSheetTorch.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.transparent)
+            }
+        }
+
+        sheetBinding.btnGenerateAutoSku.setOnClickListener {
             val randomSku = "BRG-${(100..999).random()}"
             binding.etKodeBarang.setText(randomSku)
-            Toast.makeText(this, "Kode SKU $randomSku berhasil di-generate dari pemindai", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "SKU: $randomSku dibuat!", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         }
+
+        sheetBinding.sheetBarcodeView.decodeSingle(object : com.journeyapps.barcodescanner.BarcodeCallback {
+            override fun barcodeResult(result: com.journeyapps.barcodescanner.BarcodeResult?) {
+                result?.text?.let { code ->
+                    runOnUiThread {
+                        binding.etKodeBarang.setText(code)
+                        Toast.makeText(this@TambahBarangActivity, "Kode SKU: $code berhasil dipindai!", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                }
+            }
+
+            override fun possibleResultPoints(resultPoints: MutableList<com.google.zxing.ResultPoint>?) {}
+        })
+
+        dialog.setOnShowListener {
+            sheetBinding.sheetBarcodeView.resume()
+        }
+
+        dialog.setOnDismissListener {
+            sheetBinding.sheetBarcodeView.pause()
+        }
+
+        dialog.show()
     }
 
     private fun setupKondisiButtons() {
@@ -123,27 +225,53 @@ class TambahBarangActivity : AppCompatActivity() {
         }
     }
 
+    private var selectedKategoriId: Int? = null
+
+    private fun setupKategoriPicker() {
+        binding.btnSelectKategori.setOnClickListener {
+            if (kategoriList.isEmpty()) {
+                Toast.makeText(this, "Memuat data kategori...", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val dropdownItems = kategoriList.map { kat ->
+                com.app.inventarisbarang.utils.ModernDropdownItem(
+                    id = kat.id,
+                    title = kat.nama_kategori,
+                    subtitle = kat.deskripsi ?: "Klasifikasi aset inventaris",
+                    isSelected = kat.id == selectedKategoriId,
+                    iconRes = R.drawable.ic_category
+                )
+            }
+
+            val dropdownMenu = com.app.inventarisbarang.utils.ModernDropdownMenu(
+                context = this,
+                anchorView = binding.btnSelectKategori,
+                chevronView = binding.ivChevronKategori,
+                items = dropdownItems
+            ) { selectedItem ->
+                selectedKategoriId = selectedItem.id
+                binding.tvSelectedKategori.text = selectedItem.title
+                binding.tvSelectedKategori.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+            }
+
+            dropdownMenu.show()
+        }
+    }
+
     private fun loadKategori() {
+        setupKategoriPicker()
         lifecycleScope.launch {
             try {
                 val apiService = ApiConfig.getApiService(this@TambahBarangActivity)
                 val response = apiService.getKategori()
                 if (response.isSuccessful) {
                     kategoriList = response.body()?.data ?: emptyList()
-                    val items = if (kategoriList.isEmpty()) {
-                        listOf("-- Belum ada kategori --")
-                    } else {
-                        kategoriList.map { it.nama_kategori }
+                    if (kategoriList.isNotEmpty() && selectedKategoriId == null) {
+                        val first = kategoriList.first()
+                        selectedKategoriId = first.id
+                        binding.tvSelectedKategori.text = first.nama_kategori
                     }
-
-                    val adapter = ArrayAdapter(
-                        this@TambahBarangActivity,
-                        android.R.layout.simple_spinner_item,
-                        items
-                    ).apply {
-                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    }
-                    binding.spinnerKategori.adapter = adapter
                 }
             } catch (_: Throwable) {}
         }
@@ -169,13 +297,12 @@ class TambahBarangActivity : AppCompatActivity() {
             return
         }
 
-        if (kategoriList.isEmpty()) {
-            Toast.makeText(this, "Silakan buat kategori terlebih dahulu", Toast.LENGTH_SHORT).show()
+        if (selectedKategoriId == null) {
+            Toast.makeText(this, "Silakan pilih kategori barang terlebih dahulu", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val selectedKategoriPos = binding.spinnerKategori.selectedItemPosition
-        val selectedKategori = kategoriList.getOrNull(selectedKategoriPos)
+        val selectedKategori = kategoriList.find { it.id == selectedKategoriId }
         if (selectedKategori == null) {
             Toast.makeText(this, "Pilih kategori yang valid", Toast.LENGTH_SHORT).show()
             return
@@ -199,6 +326,7 @@ class TambahBarangActivity : AppCompatActivity() {
         )
         if (lokasiRak.isNotEmpty()) {
             body["lokasi_rak"] = lokasiRak
+            body["lokasi"] = lokasiRak
         }
         if (gambarUrl.isNotEmpty()) {
             body["gambar"] = gambarUrl
@@ -212,7 +340,24 @@ class TambahBarangActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val apiService = ApiConfig.getApiService(this@TambahBarangActivity)
-                val response = apiService.tambahBarang(body)
+                val response = if (selectedImageUri != null) {
+                    val file = uriToFile(selectedImageUri!!)
+                    val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+                    val gambarPart = MultipartBody.Part.createFormData("gambar", file.name, requestFile)
+
+                    apiService.tambahBarangMultipart(
+                        kodeBarang = kodeBarang.toRequestBody("text/plain".toMediaTypeOrNull()),
+                        namaBarang = namaBarang.toRequestBody("text/plain".toMediaTypeOrNull()),
+                        kategoriId = selectedKategori.id.toString().toRequestBody("text/plain".toMediaTypeOrNull()),
+                        stok = stok.toString().toRequestBody("text/plain".toMediaTypeOrNull()),
+                        kondisi = kondisiValue.toRequestBody("text/plain".toMediaTypeOrNull()),
+                        deskripsi = if (deskripsi.isNotEmpty()) deskripsi.toRequestBody("text/plain".toMediaTypeOrNull()) else null,
+                        lokasiRak = if (lokasiRak.isNotEmpty()) lokasiRak.toRequestBody("text/plain".toMediaTypeOrNull()) else null,
+                        gambar = gambarPart
+                    )
+                } else {
+                    apiService.tambahBarang(body)
+                }
 
                 showLoading(false)
 
@@ -233,6 +378,17 @@ class TambahBarangActivity : AppCompatActivity() {
                 Toast.makeText(this@TambahBarangActivity, errorMsg, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun uriToFile(uri: Uri): File {
+        val contentResolver = applicationContext.contentResolver
+        val tempFile = File.createTempFile("upload_item_", ".jpg", cacheDir)
+        contentResolver.openInputStream(uri)?.use { input ->
+            FileOutputStream(tempFile).use { output ->
+                input.copyTo(output)
+            }
+        }
+        return tempFile
     }
 
     private fun showLoading(isLoading: Boolean) {

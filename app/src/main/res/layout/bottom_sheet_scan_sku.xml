@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_bg"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Handle drag -->
+    <View
+        android:layout_width="38dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/pill_badge"
+        android:backgroundTint="#CBD5E1" />
+
+    <!-- Title Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/circle_icon_bg"
+            android:backgroundTint="@color/primary_light"
+            android:padding="6dp"
+            android:src="@drawable/ic_scan"
+            app:tint="@color/primary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pindai Barcode / SKU Barang"
+                android:textColor="@color/text_primary"
+                android:textSize="15.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="Arahkan lensa ke kode barcode fisik unit"
+                android:textColor="@color/text_secondary"
+                android:textSize="11.5sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnSheetClose"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Tutup"
+            android:padding="8dp"
+            android:src="@drawable/ic_close"
+            app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- Camera Viewfinder Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginTop="14dp"
+        app:cardBackgroundColor="#0B0F19"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/border"
+        app:strokeWidth="1dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.journeyapps.barcodescanner.BarcodeView
+                android:id="@+id/sheetBarcodeView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- Siku Sudut Indigo Reticle -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:padding="16dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/viewfinder_corners" />
+
+            <!-- Torch Senter Button Overlay -->
+            <ImageButton
+                android:id="@+id/btnSheetTorch"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="10dp"
+                android:background="@drawable/circle_icon_bg"
+                android:backgroundTint="#80000000"
+                android:contentDescription="Senter"
+                android:padding="8dp"
+                android:src="@drawable/ic_flash"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/pill_badge"
+                android:backgroundTint="#B3000000"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="Posisikan barcode SKU tepat di tengah"
+                android:textColor="#E2E8F0"
+                android:textSize="11sp" />
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Generate Random SKU Fallback Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGenerateAutoSku"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:text="Generate Kode SKU Otomatis"
+        android:textColor="@color/primary"
+        android:textSize="12.5sp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:strokeColor="@color/primary"
+        app:strokeWidth="1dp" />
+
+</LinearLayout>

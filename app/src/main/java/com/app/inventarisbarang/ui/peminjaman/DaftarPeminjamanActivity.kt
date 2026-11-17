@@ -109,7 +109,12 @@ class DaftarPeminjamanActivity : AppCompatActivity() {
                 binding.swipeRefresh.isRefreshing = false
 
                 if (response.isSuccessful) {
-                    val list = response.body()?.data ?: emptyList()
+                    val rawList = response.body()?.data ?: emptyList()
+                    val list = if (!sessionManager.isAdmin()) {
+                        rawList.filter { it.user_id == sessionManager.getUserId() }
+                    } else {
+                        rawList
+                    }
                     adapter.submitList(list)
                     binding.tvEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
                 } else {

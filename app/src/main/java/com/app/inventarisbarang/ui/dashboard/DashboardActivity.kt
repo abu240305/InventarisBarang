@@ -1,5 +1,6 @@
 package com.app.inventarisbarang.ui.dashboard
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.TypedValue
@@ -14,15 +15,42 @@ import androidx.fragment.app.Fragment
 import com.app.inventarisbarang.R
 import com.app.inventarisbarang.databinding.ActivityDashboardBinding
 import com.app.inventarisbarang.ui.barang.BarangFragment
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
 import com.app.inventarisbarang.ui.kategori.KategoriFragment
 import com.app.inventarisbarang.ui.peminjaman.PeminjamanFragment
 import com.app.inventarisbarang.ui.profil.ProfilFragment
+import com.app.inventarisbarang.utils.AppDialog
+import com.app.inventarisbarang.utils.AppNotificationManager
 import com.app.inventarisbarang.utils.SessionManager
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 
 class DashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var sessionManager: SessionManager
+
+    private var currentScanTarget = "BARANG"
+
+    private val requestNotificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            AppNotificationManager.syncAndNotify(this, forceNotifyFirst = true)
+        }
+    }
+
+    private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
+        if (result.contents == null) {
+            Toast.makeText(this, "Pemindaian dibatalkan", Toast.LENGTH_SHORT).show()
+        } else {
+            val scannedCode = result.contents
+            handleScannedBarcode(scannedCode)
+        }
+    }
 
     val homeFragment = HomeFragment()
     val barangFragment = BarangFragment()
@@ -49,6 +77,27 @@ class DashboardActivity : AppCompatActivity() {
             commit()
         }
         updateNavUI(R.id.nav_home)
+
+        setupNotifications()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        AppNotificationManager.syncAndNotify(this, forceNotifyFirst = false)
+    }
+
+    private fun setupNotifications() {
+        AppNotificationManager.initChannel(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                AppNotificationManager.syncAndNotify(this, forceNotifyFirst = true)
+            }
+        } else {
+            AppNotificationManager.syncAndNotify(this, forceNotifyFirst = true)
+        }
     }
 
     private fun setupWindowInsets() {
@@ -102,7 +151,11 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         binding.fabScanQR.setOnClickListener {
-            showQuickScanDialog()
+            // Langsung buka layar kamera scanner 1 kali klik (tanpa pop-up perantara)
+            val intent = Intent(this, com.app.inventarisbarang.ui.scan.ScanBarcodeActivity::class.java).apply {
+                putExtra("SCAN_MODE", "BARANG")
+            }
+            startActivity(intent)
         }
     }
 
@@ -181,13 +234,66 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun showQuickScanDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Pindai Barcode / QR")
-            .setMessage("Pilih mode pemindaian:\n• Scan Aset Barang (Cek status & stok)\n• Scan Tiket Pinjam (Validasi pengembalian)")
-            .setPositiveButton("Buka Kamera Scanner") { _, _ ->
-                Toast.makeText(this, "Membuka modul QR Scanner...", Toast.LENGTH_SHORT).show()
+        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val sheetBinding = com.app.inventarisbarang.databinding.BottomSheetQrScannerBinding.inflate(layoutInflater)
+        dialog.setContentView(sheetBinding.root)
+
+        sheetBinding.cardScanBarang.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(this, com.app.inventarisbarang.ui.scan.ScanBarcodeActivity::class.java).apply {
+                putExtra("SCAN_MODE", "BARANG")
             }
-            .setNegativeButton("Tutup", null)
-            .show()
+            startActivity(intent)
+        }
+
+        sheetBinding.cardScanTiket.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(this, com.app.inventarisbarang.ui.scan.ScanBarcodeActivity::class.java).apply {
+                putExtra("SCAN_MODE", "TIKET")
+            }
+            startActivity(intent)
+        }
+
+        sheetBinding.btnStartCameraScan.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(this, com.app.inventarisbarang.ui.scan.ScanBarcodeActivity::class.java).apply {
+                putExtra("SCAN_MODE", "BARANG")
+            }
+            startActivity(intent)
+        }
+
+        dialog.show()
+    }
+
+    private fun startBarcodeScanner(promptText: String) {
+        val options = ScanOptions().apply {
+            setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
+            setPrompt(promptText)
+            setCameraId(0) // Kamera belakang
+            setBeepEnabled(true)
+            setBarcodeImageEnabled(false)
+            setOrientationLocked(false)
+        }
+        barcodeLauncher.launch(options)
+    }
+
+    private fun handleScannedBarcode(code: String) {
+        val targetDesc = if (currentScanTarget == "BARANG") "Aset Barang" else "Tiket Peminjaman"
+
+        AppDialog.showConfirmation(
+            context = this,
+            title = "Kode Terdeteksi ($targetDesc)",
+            message = "Kode berhasil terbaca oleh scanner. Apakah Anda ingin langsung membuka dan memproses data ini?",
+            highlight = code,
+            positiveText = "Buka Sekarang",
+            negativeText = "Tutup",
+            type = AppDialog.DialogType.SUCCESS
+        ) {
+            if (currentScanTarget == "BARANG") {
+                switchTab(R.id.nav_barang)
+            } else {
+                switchTab(R.id.nav_peminjaman)
+            }
+        }
     }
 }

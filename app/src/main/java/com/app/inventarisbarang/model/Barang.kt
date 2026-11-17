@@ -28,7 +28,13 @@ data class Barang(
     val status_ketersediaan: String? = "Tersedia",
 
     @SerializedName("lokasi_rak")
-    val lokasi_rak: String? = "Rak A-01",
+    val lokasi_rak: String? = null,
+
+    @SerializedName("lokasi")
+    val lokasi: String? = null,
+
+    @SerializedName("qr_code_url")
+    val qr_code_url: String? = null,
 
     @SerializedName("deskripsi")
     val deskripsi: String? = null,
@@ -36,6 +42,13 @@ data class Barang(
     @SerializedName("kategori")
     val kategori: Kategori? = null
 ) {
+    val displayLokasi: String
+        get() = when {
+            !lokasi.isNullOrBlank() -> lokasi
+            !lokasi_rak.isNullOrBlank() -> lokasi_rak
+            else -> "Rak Gudang Logistik"
+        }
+
     override fun toString(): String {
         return "$nama_barang (Stok: $stok)"
     }

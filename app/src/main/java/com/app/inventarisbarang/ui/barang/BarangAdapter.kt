@@ -58,13 +58,17 @@ class BarangAdapter(
 
             // Load image with Coil
             if (!barang.gambar.isNullOrEmpty()) {
+                binding.ivGambarBarang.imageTintList = null
+                binding.ivGambarBarang.scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
                 binding.ivGambarBarang.load(barang.gambar) {
                     crossfade(true)
-                    placeholder(R.drawable.ic_inventory)
-                    error(R.drawable.ic_inventory)
+                    placeholder(R.drawable.ic_inventory_2)
+                    error(R.drawable.ic_inventory_2)
                 }
             } else {
-                binding.ivGambarBarang.setImageResource(R.drawable.ic_inventory)
+                binding.ivGambarBarang.imageTintList = null
+                binding.ivGambarBarang.scaleType = android.widget.ImageView.ScaleType.CENTER_INSIDE
+                binding.ivGambarBarang.setImageResource(R.drawable.ic_inventory_2)
             }
 
             val (bgColorRes, textColorRes) = when (barang.kondisi.lowercase()) {

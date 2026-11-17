@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="260dp"
+    android:height="195dp"
+    android:viewportWidth="260"
+    android:viewportHeight="195">
+
+    <!-- Top Left Corner -->
+    <path
+        android:pathData="M8,44 L8,16 A8,8 0 0,1 16,8 L44,8"
+        android:strokeColor="#4F46E5"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Top Right Corner -->
+    <path
+        android:pathData="M216,8 L244,8 A8,8 0 0,1 252,16 L252,44"
+        android:strokeColor="#4F46E5"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Bottom Left Corner -->
+    <path
+        android:pathData="M8,151 L8,179 A8,8 0 0,0 16,187 L44,187"
+        android:strokeColor="#4F46E5"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Bottom Right Corner -->
+    <path
+        android:pathData="M216,187 L244,187 A8,8 0 0,0 252,179 L252,151"
+        android:strokeColor="#4F46E5"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Center Laser Line Indicator -->
+    <path
+        android:pathData="M35,97.5 L225,97.5"
+        android:strokeColor="#818CF8"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.8" />
+</vector>

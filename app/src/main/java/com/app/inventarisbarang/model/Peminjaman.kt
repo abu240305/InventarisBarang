@@ -33,6 +33,9 @@ data class Peminjaman(
     @SerializedName("status_tempo")
     val status_tempo: String? = null,
 
+    @SerializedName("qr_code_url")
+    val qr_code_url: String? = null,
+
     @SerializedName("keterangan")
     val keterangan: String? = null,
 
@@ -41,4 +44,7 @@ data class Peminjaman(
 
     @SerializedName("barang")
     val barang: Barang? = null
-)
+) {
+    val displayKode: String
+        get() = if (!kode_peminjaman.isNullOrBlank()) kode_peminjaman else "TRX-$id"
+}

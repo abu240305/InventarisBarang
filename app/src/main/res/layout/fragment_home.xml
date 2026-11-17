@@ -82,7 +82,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="2dp"
-                                    android:text="Sistem Informasi Inventaris DCC"
+                                    android:text="Sistem Informasi Inventaris Barang"
                                     android:textColor="#DAD7FF"
                                     android:textSize="12sp" />
                             </LinearLayout>
@@ -127,50 +127,6 @@
                                 android:textColor="#E6F7F0"
                                 android:textSize="11sp"
                                 android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <!-- Quick Barcode Action Strip -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/pill_badge"
-                            android:backgroundTint="#20000000"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingStart="12dp"
-                            android:paddingTop="6dp"
-                            android:paddingEnd="6dp"
-                            android:paddingBottom="6dp">
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:contentDescription="Scan"
-                                android:src="@drawable/ic_scan"
-                                app:tint="#DAD7FF" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_weight="1"
-                                android:text="Akses cepat pemindaian barcode fisik aset"
-                                android:textColor="@color/white"
-                                android:textSize="11.5sp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnScanBarcode"
-                                android:layout_width="wrap_content"
-                                android:layout_height="34dp"
-                                android:backgroundTint="@color/white"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                android:text="Pindai"
-                                android:textColor="@color/primary"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                app:cornerRadius="17dp" />
                         </LinearLayout>
 
                     </LinearLayout>

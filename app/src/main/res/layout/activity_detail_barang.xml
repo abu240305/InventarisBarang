@@ -3,20 +3,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/canvas_background">
 
+    <!-- APPBAR HEADER (Dinamis dengan Status Bar Insets) -->
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary">
+        android:background="@color/primary"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="64dp"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="Detail Barang"
-            app:titleTextColor="@color/white" />
+            app:navigationIconTint="@color/white"
+            app:title="Detail Aset Barang"
+            app:titleTextColor="@color/white"
+            app:subtitle="Sistem Informasi Inventaris"
+            app:subtitleTextColor="#C7D7FE"
+            app:titleTextAppearance="@style/TextAppearance.Material3.TitleMedium">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/btnToolbarEdit"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="Edit Data"
+                    android:focusable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_edit"
+                    android:visibility="gone"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:id="@+id/btnToolbarShare"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="Bagikan QR"
+                    android:focusable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_share"
+                    app:tint="@color/white" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,49 +69,99 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:paddingBottom="100dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="24dp">
 
-                <androidx.cardview.widget.CardView
+                <!-- 1. HERO PHOTO CARD DENGAN FLOATING BADGES -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardHeroPhoto"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/surface"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp">
+                    android:layout_height="210dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="1dp"
+                    app:strokeColor="@color/border"
+                    app:strokeWidth="1dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
+                        android:layout_height="match_parent">
 
+                        <!-- PLACEHOLDER ILUSTRASI JIKA FOTO TIDAK ADA -->
+                        <LinearLayout
+                            android:id="@+id/layoutPlaceholderFoto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#EEF2FF"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="52dp"
+                                android:contentDescription="Icon"
+                                android:src="@drawable/ic_inventory_2"
+                                app:tint="@color/primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Pratinjau Foto Aset Fisik"
+                                android:textColor="@color/primary"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Belum ada foto yang diunggah"
+                                android:textColor="@color/text_muted"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <!-- ACTUAL IMAGE WITH COIL -->
+                        <ImageView
+                            android:id="@+id/ivFotoBarang"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="Foto Barang"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+
+                        <!-- FLOATING OVERLAY TOP ROW: SKU PILL & KONDISI PILL -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:padding="12dp">
 
                             <TextView
                                 android:id="@+id/tvKodeBarang"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/badge_background"
-                                android:backgroundTint="@color/primary_light"
-                                android:paddingStart="10dp"
-                                android:paddingTop="4dp"
-                                android:paddingEnd="10dp"
-                                android:paddingBottom="4dp"
+                                android:background="@drawable/pill_badge"
+                                android:backgroundTint="#CC0F172A"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp"
                                 android:text="BRG-001"
-                                android:textColor="@color/primary"
-                                android:textSize="12sp"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <View
@@ -79,138 +173,542 @@
                                 android:id="@+id/tvKondisiBadge"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/badge_background"
+                                android:background="@drawable/pill_badge"
                                 android:backgroundTint="@color/kondisi_baik_bg"
-                                android:paddingStart="12dp"
-                                android:paddingTop="4dp"
-                                android:paddingEnd="12dp"
-                                android:paddingBottom="4dp"
-                                android:text="Baik"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp"
+                                android:text="● Baik"
                                 android:textColor="@color/kondisi_baik_text"
-                                android:textSize="12sp"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
+
+                    </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- 2. NAMA & INFORMASI UTAMA BENTO CARD -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="1dp"
+                    app:strokeColor="@color/border"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
 
                         <TextView
                             android:id="@+id/tvNamaBarang"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="14dp"
                             android:text="Nama Barang"
                             android:textColor="@color/text_primary"
-                            android:textSize="20sp"
+                            android:textSize="19sp"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/tvKategori"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Kategori: Elektronik"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:background="@color/border" />
-
+                        <!-- BARIS KATEGORI & LOKASI CHIPS -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Stok Tersedia:"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tvStok"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10 Unit"
-                                android:textColor="@color/text_primary"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                android:background="@drawable/pill_badge"
+                                android:backgroundTint="#F1F5F9"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:contentDescription="Category"
+                                    android:src="@drawable/ic_category"
+                                    app:tint="@color/text_secondary" />
+
+                                <TextView
+                                    android:id="@+id/tvKategori"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:text="Perangkat Jaringan"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:background="@drawable/pill_badge"
+                                android:backgroundTint="@color/primary_light"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp">
+
+                                <TextView
+                                    android:id="@+id/tvLokasi"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="📍 Rak A-01"
+                                    android:textColor="@color/primary"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
                         </LinearLayout>
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:background="@color/border" />
+                            android:layout_marginVertical="14dp"
+                            android:background="#F1F5F9" />
 
-                        <TextView
+                        <!-- BENTO STAT GRID (Stok Fisik & Status Distribusi) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!-- BENTO 1: TOTAL STOK -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/form_input_bg"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="14dp"
+                                        android:layout_height="14dp"
+                                        android:src="@drawable/ic_inventory"
+                                        app:tint="@color/text_muted" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="5dp"
+                                        android:text="TOTAL STOK FISIK"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="10.5sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/tvStok"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="10 Unit"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="17sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="10dp"
+                                android:layout_height="match_parent" />
+
+                            <!-- BENTO 2: STATUS DISTRIBUSI -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/form_input_bg"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="14dp"
+                                        android:layout_height="14dp"
+                                        android:src="@drawable/ic_check_circle"
+                                        app:tint="@color/text_muted" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="5dp"
+                                        android:text="STATUS DISTRIBUSI"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="10.5sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/tvStatusKetersediaan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="Siap Dipinjam"
+                                    android:textColor="@color/secondary"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- 3. DESKRIPSI & SPESIFIKASI CARD -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="1dp"
+                    app:strokeColor="@color/border"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Deskripsi Barang"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_assignment"
+                                app:tint="@color/text_secondary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="Deskripsi &amp; Spesifikasi"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/tvDeskripsi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
+                            android:layout_marginTop="10dp"
+                            android:lineSpacingExtra="4dp"
                             android:text="Tidak ada deskripsi tambahan."
                             android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:lineSpacingExtra="3dp" />
+                            android:textSize="13.5sp" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <!-- Action Buttons Container -->
+                <!-- 4. OFFICIAL QR CODE & BARCODE CARD -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="1dp"
+                    app:strokeColor="@color/border"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:layout_width="38dp"
+                                android:layout_height="38dp"
+                                android:background="@drawable/circle_icon_bg"
+                                android:backgroundTint="@color/primary_light">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="QR"
+                                    android:src="@drawable/ic_qr_scanner"
+                                    app:tint="@color/primary" />
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="QR Code Resmi Aset"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="1dp"
+                                    android:text="Scan untuk audit fisik &amp; peminjaman cepat"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="11.5sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- QR CODE DISPLAY CONTAINER -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="0dp"
+                            app:strokeColor="@color/border"
+                            app:strokeWidth="1dp">
+
+                            <ImageView
+                                android:id="@+id/ivQrCode"
+                                android:layout_width="160dp"
+                                android:layout_height="160dp"
+                                android:clickable="true"
+                                android:contentDescription="QR Code"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:padding="12dp"
+                                android:scaleType="fitCenter" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:id="@+id/tvQrCodeValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:letterSpacing="0.08"
+                            android:text="BRG-001"
+                            android:textColor="@color/text_primary"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="✓ QR Code Asli Terverifikasi Sistem"
+                            android:textColor="#059669"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <!-- TOMBOL UTAMA CETAK -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCetakQr"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="14dp"
+                            android:backgroundTint="@color/primary"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="Cetak Label Barcode / QR"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_printer"
+                            app:iconGravity="textStart"
+                            app:iconSize="18dp"
+                            app:iconTint="@color/white" />
+
+                        <!-- TOMBOL SUB AKSI (SALIN SKU & BAGIKAN) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnSalinSku"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="44dp"
+                                android:layout_weight="1"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:text="Salin SKU"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"
+                                app:cornerRadius="12dp"
+                                app:icon="@drawable/ic_copy"
+                                app:iconSize="16dp"
+                                app:iconTint="@color/text_primary"
+                                app:strokeColor="@color/border" />
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnBagikanQr"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="44dp"
+                                android:layout_weight="1"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:text="Bagikan QR"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp"
+                                app:cornerRadius="12dp"
+                                app:icon="@drawable/ic_share"
+                                app:iconSize="16dp"
+                                app:iconTint="@color/primary"
+                                app:strokeColor="@color/primary" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- 5. STICKY BOTTOM ACTION BAR (SELALU TERLIHAT DI BAWAH) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardBottomAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/border" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp">
+
+                <!-- USER ACTIONS: AJUKAN PINJAM -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAjukanPinjam"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/primary"
+                    android:text="Ajukan Peminjaman Aset →"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:cornerRadius="14dp" />
+
+                <!-- ADMIN ACTIONS: HAPUS, EDIT, PINJAM -->
                 <LinearLayout
                     android:id="@+id/layoutAdminActions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:visibility="gone">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnEditBarang"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:text="Edit Data Barang"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="10dp" />
+                        android:id="@+id/btnHapusBarang"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        app:cornerRadius="14dp"
+                        app:icon="@drawable/ic_delete"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="20dp"
+                        app:iconTint="@color/error"
+                        app:strokeColor="#FCA5A5" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnHapusBarang"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Hapus Barang Ini"
-                        android:textColor="@color/status_ditolak_text"
-                        android:textSize="15sp"
+                        android:id="@+id/btnEditBarang"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="Edit Data"
+                        android:textColor="@color/primary"
+                        android:textSize="13sp"
                         android:textStyle="bold"
-                        app:cornerRadius="10dp"
-                        app:strokeColor="@color/status_ditolak_text" />
+                        app:cornerRadius="14dp"
+                        app:icon="@drawable/ic_edit"
+                        app:iconSize="18dp"
+                        app:iconTint="@color/primary"
+                        app:strokeColor="@color/primary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAdminPinjam"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1.3"
+                        android:backgroundTint="@color/primary"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="Pinjam Aset →"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="14dp" />
                 </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnAjukanPinjam"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Ajukan Peminjaman"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    app:cornerRadius="10dp" />
-
             </LinearLayout>
-        </ScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -18,6 +18,7 @@ import com.app.inventarisbarang.databinding.FragmentKategoriBinding
 import com.app.inventarisbarang.model.Kategori
 import com.app.inventarisbarang.network.ApiConfig
 import com.app.inventarisbarang.ui.dashboard.DashboardActivity
+import com.app.inventarisbarang.utils.AppDialog
 import com.app.inventarisbarang.utils.ErrorUtils
 import com.app.inventarisbarang.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -62,6 +63,8 @@ class KategoriFragment : Fragment() {
 
         val avatar = sessionManager.getAvatar()
         if (avatar.isNotEmpty()) {
+            binding.topBar.ivTopAvatar.imageTintList = null
+            binding.topBar.ivTopAvatar.setPadding(0, 0, 0, 0)
             binding.topBar.ivTopAvatar.load(avatar) {
                 crossfade(true)
                 placeholder(R.drawable.ic_person)
@@ -73,7 +76,7 @@ class KategoriFragment : Fragment() {
         }
 
         binding.topBar.btnNotification.setOnClickListener {
-            Toast.makeText(requireContext(), "Semua notifikasi inventaris telah diperbarui", Toast.LENGTH_SHORT).show()
+            AppDialog.showNotificationSheet(requireContext())
         }
     }
 
@@ -198,14 +201,17 @@ class KategoriFragment : Fragment() {
     }
 
     private fun showDeleteConfirmDialog(kategori: Kategori) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Hapus Kategori")
-            .setMessage("Yakin ingin menghapus kategori \"${kategori.nama_kategori}\"?")
-            .setPositiveButton("Hapus") { _, _ ->
-                deleteKategori(kategori.id)
-            }
-            .setNegativeButton("Batal", null)
-            .show()
+        AppDialog.showConfirmation(
+            context = requireContext(),
+            title = "Hapus Kategori?",
+            message = "Apakah Anda yakin ingin menghapus kategori ini? Data yang terhapus tidak dapat dipulihkan.",
+            highlight = kategori.nama_kategori,
+            positiveText = "Hapus Kategori",
+            negativeText = "Batal",
+            type = AppDialog.DialogType.DESTRUCTIVE
+        ) {
+            deleteKategori(kategori.id)
+        }
     }
 
     private fun deleteKategori(id: Int) {

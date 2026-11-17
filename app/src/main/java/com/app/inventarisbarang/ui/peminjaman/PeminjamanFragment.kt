@@ -20,6 +20,7 @@ import com.app.inventarisbarang.databinding.FragmentPeminjamanBinding
 import com.app.inventarisbarang.model.Peminjaman
 import com.app.inventarisbarang.network.ApiConfig
 import com.app.inventarisbarang.ui.dashboard.DashboardActivity
+import com.app.inventarisbarang.utils.AppDialog
 import com.app.inventarisbarang.utils.ErrorUtils
 import com.app.inventarisbarang.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -66,6 +67,8 @@ class PeminjamanFragment : Fragment() {
 
         val avatar = sessionManager.getAvatar()
         if (avatar.isNotEmpty()) {
+            binding.topBar.ivTopAvatar.imageTintList = null
+            binding.topBar.ivTopAvatar.setPadding(0, 0, 0, 0)
             binding.topBar.ivTopAvatar.load(avatar) {
                 crossfade(true)
                 placeholder(R.drawable.ic_person)
@@ -77,7 +80,7 @@ class PeminjamanFragment : Fragment() {
         }
 
         binding.topBar.btnNotification.setOnClickListener {
-            Toast.makeText(requireContext(), "Semua notifikasi inventaris telah diperbarui", Toast.LENGTH_SHORT).show()
+            AppDialog.showNotificationSheet(requireContext())
         }
     }
 
@@ -199,7 +202,12 @@ class PeminjamanFragment : Fragment() {
                 binding.swipeRefresh.isRefreshing = false
 
                 if (response.isSuccessful) {
-                    val list = response.body()?.data ?: emptyList()
+                    val rawList = response.body()?.data ?: emptyList()
+                    val list = if (!sessionManager.isAdmin()) {
+                        rawList.filter { it.user_id == sessionManager.getUserId() }
+                    } else {
+                        rawList
+                    }
                     adapter.submitList(list)
                     binding.tvEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
 
