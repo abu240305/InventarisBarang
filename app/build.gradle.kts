@@ -67,6 +67,9 @@ dependencies {
     implementation("com.google.zxing:core:3.5.3")
     implementation("androidx.print:print:1.0.0")
 
+    // WorkManager (Background sync for notifications when app is closed)
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

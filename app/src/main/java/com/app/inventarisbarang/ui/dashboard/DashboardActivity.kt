@@ -88,6 +88,7 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun setupNotifications() {
         AppNotificationManager.initChannel(this)
+        AppNotificationManager.scheduleBackgroundSync(this)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
